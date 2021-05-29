@@ -125,6 +125,7 @@ else if (my_rank>0) {
 }
 
 if (my_rank==0){
+	#ifdef DEBUG
 	printf("\n");
 	for (j=0 ; j<ARRAY_NUMBER; j++)
 	{
@@ -133,6 +134,7 @@ if (my_rank==0){
 		}
 		printf("linha %d \n",j);
 	}
+	#endif
 }
    
 MPI_Finalize();
