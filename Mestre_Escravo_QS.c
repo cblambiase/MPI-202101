@@ -4,8 +4,8 @@
 #include "mpi.h"
  
 //#define DEBUG 1            // comentar esta linha quando for medir tempo
-#define ARRAY_SIZE 10000      // trabalho final com o valores 10.000, 100.000, 1.000.000
-#define ARRAY_NUMBER 100      // número de arrays
+#define ARRAY_SIZE 100000      // trabalho final com o valores 10.000, 100.000, 1.000.000
+#define ARRAY_NUMBER 1000      // número de arrays
  
 int compare (const void *a, const void *b)
 {
@@ -27,11 +27,18 @@ MPI_Init (&argc , & argv);
  
 MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
 MPI_Comm_size(MPI_COMM_WORLD, &proc_n);
+
+
+int (*saco)[ARRAY_NUMBER] = malloc(ARRAY_SIZE * sizeof *saco);
  
-int saco[ARRAY_NUMBER][ARRAY_SIZE]; 
 int vetor_recebido[ARRAY_SIZE+1];
 int ponteiro,linha_saco;
 int i,j,np;
+
+double inteiro[10];
+double t1,t2;
+t1 = MPI_Wtime();  // inicia a contagem do tempo
+inteiro[1]=t1;
 
 	ponteiro=0;
 	
@@ -122,7 +129,13 @@ if (my_rank==0){
 		printf("linha %d \n",j);
 	}
 	#endif
+	
+	t1=inteiro[1];
+        t2 = MPI_Wtime(); // termina a contagem do tempo
+        printf(" \nTempo gasto pela mensagem da Raiz até o processo %d: %f\n",my_rank, t2-t1);
+        t1=inteiro[2];
+        printf(" Tempo gasto pela mensagem desde o processo anterior até o processo %d: %f\n",my_rank, t2-t1);
 }
-   
+free(saco);   
 MPI_Finalize();
 }
